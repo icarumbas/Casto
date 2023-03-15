@@ -53,6 +53,12 @@ dependencies {
         debugImplementation(uiTooling)
         implementation(activities)
         implementation(viewModels)
+        implementation(iconsExtended)
+    }
+
+    with(Deps.Navigation) {
+        implementation(compose)
+        implementation(uiKtx)
     }
 
     with(Deps.JUnit5) {

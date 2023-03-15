@@ -13,4 +13,5 @@ object Versions {
     const val ktor = "2.2.3"
     const val serialization = "1.5.0"
     const val dateTime = "0.4.0"
+    const val navigation = "2.5.3"
 }

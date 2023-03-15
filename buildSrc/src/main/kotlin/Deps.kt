@@ -7,6 +7,7 @@ object Deps {
         const val uiTooling = "androidx.compose.ui:ui-tooling"
         const val activities = "androidx.activity:activity-compose:${Versions.composeActivities}"
         const val viewModels = "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.composeViewModels}"
+        const val iconsExtended = "androidx.compose.material:material-icons-extended"
     }
 
     object Coroutines {
@@ -25,6 +26,8 @@ object Deps {
         const val core = "io.ktor:ktor-client-core:${Versions.ktor}"
         const val android = "io.ktor:ktor-client-okhttp:${Versions.ktor}"
         const val ios = "io.ktor:ktor-client-darwin:${Versions.ktor}"
+        const val contentNegotiation = "io.ktor:ktor-client-content-negotiation:${Versions.ktor}"
+        const val jsonSerializer = "io.ktor:ktor-serialization-kotlinx-json:${Versions.ktor}"
     }
 
     object Serialization {
@@ -33,5 +36,10 @@ object Deps {
 
     object DateTime {
         const val core = "org.jetbrains.kotlinx:kotlinx-datetime:${Versions.dateTime}"
+    }
+
+    object Navigation {
+        const val uiKtx = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
+        const val compose = "androidx.navigation:navigation-compose:${Versions.navigation}"
     }
 }

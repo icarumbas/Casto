@@ -2,6 +2,7 @@ package com.icarumbas.casto.api.binance
 
 import com.icarumbas.casto.api.binance.models.BinanceUserCoinResponse
 import io.ktor.client.*
+import io.ktor.client.call.*
 import io.ktor.client.request.*
 
 
@@ -11,10 +12,8 @@ class BinanceApi(
 ) {
 
     suspend fun getUserCoins(): List<BinanceUserCoinResponse> {
-        val response = client.get(binanceRequestBuilder.sapiRequest("capital/config/getall"))
-        return emptyList()
+        return client.get(binanceRequestBuilder
+            .sapiRequest("capital/config/getall"))
+            .body()
     }
-
-
-
 }

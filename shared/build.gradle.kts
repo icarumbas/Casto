@@ -27,7 +27,12 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(Deps.Coroutines.common)
-                implementation(Deps.Ktor.core)
+
+                with(Deps.Ktor) {
+                    implementation(core)
+                    implementation(contentNegotiation)
+                    implementation(jsonSerializer)
+                }
                 implementation(Deps.Serialization.json)
                 implementation(Deps.DateTime.core)
             }
