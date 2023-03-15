@@ -1,23 +1,25 @@
 plugins {
-    id("com.android.application")
-    kotlin("android")
+    id(androidApp)
+    kotlin(androidPlugin)
+    id(junit5) version Versions.junit5Plugin
 }
 
 android {
-    namespace = "com.example.casto.android"
-    compileSdk = 33
+    namespace = "com.icarumbas.casto.android"
+    compileSdk = ConfigData.compileSdkVersion
+
     defaultConfig {
-        applicationId = "com.example.casto.android"
-        minSdk = 24
-        targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
+        applicationId = "com.icarumbas.casto.android"
+        minSdk = ConfigData.minSdkVersion
+        targetSdk = ConfigData.targetSdkVersion
+        versionCode = ConfigData.versionCode
+        versionName = ConfigData.versionName
     }
     buildFeatures {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.0"
+        kotlinCompilerExtensionVersion = Versions.composeKotlinCompiler
     }
     packagingOptions {
         resources {
@@ -40,10 +42,22 @@ android {
 
 dependencies {
     implementation(project(":shared"))
-    implementation("androidx.compose.ui:ui:1.3.1")
-    implementation("androidx.compose.ui:ui-tooling:1.3.1")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.3.1")
-    implementation("androidx.compose.foundation:foundation:1.3.1")
-    implementation("androidx.compose.material:material:1.3.1")
-    implementation("androidx.activity:activity-compose:1.6.1")
+
+    with(Deps.Compose) {
+        val composeBom = platform(bom)
+        implementation(composeBom)
+        androidTestImplementation(composeBom)
+
+        implementation(material3)
+        implementation(toolingPreview)
+        debugImplementation(uiTooling)
+        implementation(activities)
+        implementation(viewModels)
+    }
+
+    with(Deps.JUnit5) {
+        testImplementation(api)
+        testRuntimeOnly(engine)
+    }
+
 }

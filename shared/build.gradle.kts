@@ -1,6 +1,7 @@
 plugins {
-    kotlin("multiplatform")
-    id("com.android.library")
+    kotlin(multiplatform)
+    id(androidLib)
+    kotlin(serialization) version Versions.kotlin
 }
 
 kotlin {
@@ -23,19 +24,34 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting
+        val commonMain by getting {
+            dependencies {
+                implementation(Deps.Coroutines.common)
+                implementation(Deps.Ktor.core)
+                implementation(Deps.Serialization.json)
+                implementation(Deps.DateTime.core)
+            }
+        }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
             }
         }
-        val androidMain by getting
+        val androidMain by getting {
+            dependencies {
+                implementation(Deps.Ktor.android)
+            }
+        }
         val androidUnitTest by getting
         val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting
         val iosMain by creating {
             dependsOn(commonMain)
+            dependencies {
+                implementation(Deps.Ktor.ios)
+            }
+
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
@@ -53,10 +69,11 @@ kotlin {
 }
 
 android {
-    namespace = "com.example.casto"
-    compileSdk = 33
+    namespace = "com.icarumbas.casto"
+    compileSdk = ConfigData.compileSdkVersion
+
     defaultConfig {
-        minSdk = 24
-        targetSdk = 33
+        minSdk = ConfigData.minSdkVersion
+        targetSdk = ConfigData.targetSdkVersion
     }
 }
