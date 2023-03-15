@@ -23,8 +23,8 @@ fun rememberAppState(
 }
 
 class AppState(
-    private val navController: NavHostController,
-    private val coroutineScope: CoroutineScope,
+    val navController: NavHostController,
+    val coroutineScope: CoroutineScope,
 ) {
 
     /**
@@ -52,9 +52,6 @@ class AppState(
             restoreState = true
         }
 
-        /*when (topLevelDestination) {
-            SETTINGS -> navController.navigate(topLevelNavOptions)
-            WALLET -> navController.navigate(topLevelNavOptions)
-        }*/
+        navController.navigate(topLevelDestination.name, topLevelNavOptions)
     }
 }

@@ -7,19 +7,16 @@ import com.icarumbas.casto.android.core.designsystem.CastoIcons
 enum class TopLevelDestination(
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector,
-    val iconTextId: Int,
-    val titleTextId: Int,
+    val textRes: Int,
 ) {
-    WALLET(
+    PORTFOLIO(
         selectedIcon = CastoIcons.PortfolioFilled,
         unselectedIcon = CastoIcons.PortfolioOutline,
-        iconTextId = R.string.navigation_wallet,
-        titleTextId = R.string.navigation_wallet,
+        textRes = R.string.navigation_portfolio,
     ),
     SETTINGS(
         selectedIcon = CastoIcons.SettingsFilled,
         unselectedIcon = CastoIcons.SettingsOutline,
-        iconTextId = R.string.navigation_settings,
-        titleTextId = R.string.navigation_settings,
+        textRes = R.string.navigation_settings,
     ),
 }

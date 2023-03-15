@@ -11,7 +11,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import com.icarumbas.casto.android.navigation.TopLevelDestination
+import com.icarumbas.casto.android.portfolio.PortfolioScreen
+import com.icarumbas.casto.android.settings.SettingsScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
@@ -31,7 +35,10 @@ fun CastoApp(appState: AppState = rememberAppState()) {
                 )
             },
         ) { padding ->
-            Text(text = "Hello Maxim!", Modifier.padding(padding))
+            NavHost(appState.navController, TopLevelDestination.PORTFOLIO.name, Modifier.padding(padding)) {
+                composable(TopLevelDestination.PORTFOLIO.name) { PortfolioScreen() }
+                composable(TopLevelDestination.SETTINGS.name) { SettingsScreen() }
+            }
         }
     }
 }
@@ -60,7 +67,7 @@ private fun AppBottomBar(
                 }},
                 modifier = modifier,
                 enabled = true,
-                label = { Text(stringResource(destination.iconTextId)) },
+                label = { Text(stringResource(destination.textRes)) },
                 alwaysShowLabel = true,
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = NavigationDefaults.navigationSelectedItemColor(),
