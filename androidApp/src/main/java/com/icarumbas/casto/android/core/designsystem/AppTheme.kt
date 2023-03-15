@@ -1,4 +1,4 @@
-package com.example.compose
+package com.icarumbas.casto.android.core.designsystem
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -84,7 +84,8 @@ fun AppTheme(
   }
 
   MaterialTheme(
-    colorScheme = colors,
-    content = content
+      colorScheme = colors,
+      typography = AppTypography,
+      content = content
   )
 }

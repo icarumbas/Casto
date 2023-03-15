@@ -2,7 +2,7 @@ package com.icarumbas.casto.android.navigation
 
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.icarumbas.casto.android.R
-import com.icarumbas.casto.android.core.designsystem.CastoIcons
+import com.icarumbas.casto.android.core.designsystem.AppIcons
 
 enum class TopLevelDestination(
     val selectedIcon: ImageVector,
@@ -10,13 +10,13 @@ enum class TopLevelDestination(
     val textRes: Int,
 ) {
     PORTFOLIO(
-        selectedIcon = CastoIcons.PortfolioFilled,
-        unselectedIcon = CastoIcons.PortfolioOutline,
+        selectedIcon = AppIcons.PortfolioFilled,
+        unselectedIcon = AppIcons.PortfolioOutline,
         textRes = R.string.navigation_portfolio,
     ),
     SETTINGS(
-        selectedIcon = CastoIcons.SettingsFilled,
-        unselectedIcon = CastoIcons.SettingsOutline,
+        selectedIcon = AppIcons.SettingsFilled,
+        unselectedIcon = AppIcons.SettingsOutline,
         textRes = R.string.navigation_settings,
     ),
 }
