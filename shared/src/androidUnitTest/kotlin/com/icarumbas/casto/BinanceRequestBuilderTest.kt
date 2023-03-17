@@ -2,6 +2,9 @@ package com.icarumbas.casto
 
 import com.icarumbas.casto.api.CurrentTimeProvider
 import com.icarumbas.casto.api.binance.BinanceRequestBuilder
+import com.icarumbas.casto.storage.binance.BinanceSecureKeyProvider
+import io.mockk.coEvery
+import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -15,13 +18,13 @@ class BinanceRequestBuilderTest {
                 return 1499827319559L
             }
         }
-        val secretKeyProvider = object : BinanceRequestBuilder.SecretKeyProvider {
-            override suspend fun getPrivateKey(): String {
-                return "NhqPtmdSJYdKjVHjA7PZj4Mge3R5YNiP1e3UZjInClVN65XAbvqqM6A7H5fATj0j"
-            }
-        }
 
-        val requestBuilder = BinanceRequestBuilder(secretKeyProvider, currentTimeProvider)
+        val mockSecureKeyProvider = mockk<BinanceSecureKeyProvider>()
+        coEvery {
+            mockSecureKeyProvider.getPrivateKey()
+        } returns "NhqPtmdSJYdKjVHjA7PZj4Mge3R5YNiP1e3UZjInClVN65XAbvqqM6A7H5fATj0j"
+
+        val requestBuilder = BinanceRequestBuilder(mockSecureKeyProvider, currentTimeProvider)
         val requestData = runBlocking {
             requestBuilder.sapiRequest("") {
                 url {

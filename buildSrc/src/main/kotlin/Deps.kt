@@ -50,5 +50,11 @@ object Deps {
     object MokoMvvm {
         const val core = "dev.icerock.moko:mvvm-core:${Versions.mokoMvvm}"
         const val flow = "dev.icerock.moko:mvvm-flow:${Versions.mokoMvvm}"
+        const val flowCompose = "dev.icerock.moko:mvvm-flow-compose:${Versions.mokoMvvm}"
+    }
+
+    object Tests {
+        const val junit = "junit:junit:${Versions.junit}"
+        const val mockk = "io.mockk:mockk:${Versions.mockk}"
     }
 }

@@ -4,6 +4,7 @@ plugins {
     id(kswift_plugin)
     id(sqldelight_plugin)
     kotlin(cocoapods)
+    kotlin(serialization)
 }
 
 kotlin {
@@ -39,6 +40,9 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(Deps.Coroutines.common)
+                implementation(Deps.Serialization.json)
+                implementation(Deps.DateTime.core)
+                implementation(Deps.Kodein.core)
 
                 with(Deps.Ktor) {
                     implementation(core)
@@ -49,8 +53,6 @@ kotlin {
                     implementation(core)
                     implementation(flow)
                 }
-                implementation(Deps.Serialization.json)
-                implementation(Deps.DateTime.core)
             }
         }
         val commonTest by getting {
@@ -62,6 +64,7 @@ kotlin {
             dependsOn(commonMain)
             dependencies {
                 implementation(Deps.Ktor.android)
+                implementation(Deps.MokoMvvm.flowCompose)
 
                 with(Deps.Compose) {
                     val composeBom = platform(bom)
@@ -80,7 +83,14 @@ kotlin {
                 }
             }
         }
-        val androidUnitTest by getting
+        val androidUnitTest by getting {
+            dependencies {
+                with(Deps.Tests) {
+                    implementation(junit)
+                    implementation(mockk)
+                }
+            }
+        }
         val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting

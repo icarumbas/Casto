@@ -5,20 +5,40 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.icarumbas.casto.android.designsystem.AppTypography
-import com.icarumbas.casto.screens.portfolio.PortfolioCoin
-import com.icarumbas.casto.screens.portfolio.PortfolioViewModel
+import com.icarumbas.casto.screens.portfolio.*
+import dev.icerock.moko.mvvm.flow.compose.observeAsActions
 
 @Composable
 fun PortfolioScreen(
-    vm: PortfolioViewModel = viewModel()
+    viewModel: PortfolioViewModel = viewModel()
 ) {
+    val viewState: PortfolioState by viewModel.state.collectAsState()
+    viewModel.sideEffects.observeAsActions { sideEffect ->
+
+    }
+
+    LaunchedEffect(key1 = viewState, block = {
+        viewModel.obtainIntent(intent = PortfolioIntent.EnterScreen)
+    })
+
     Text(text = "Portfolio Screen")
-    CoinsList(coinsData = emptyList())
+    when (val state = viewState) {
+        is PortfolioState.Data -> {
+            CoinsList(coinsData = state.items)
+        }
+        else -> {
+
+        }
+    }
+
 }
 
 @Composable

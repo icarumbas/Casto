@@ -1,19 +1,26 @@
 package com.icarumbas.casto.screens.portfolio
 
+import com.icarumbas.casto.api.binance.BinanceApi
+import com.icarumbas.casto.di.appDI
+import com.icarumbas.casto.repository.CoinsRepository
+import com.icarumbas.casto.storage.models.StorageCoin
 import dev.icerock.moko.mvvm.flow.*
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
+import org.kodein.di.Instance
+import org.kodein.di.instance
 
 
-sealed class PortfolioState {
-    object Loading : PortfolioState()
+sealed interface PortfolioState {
+    object Loading : PortfolioState
 
     data class Data(
         val items: List<PortfolioCoin>,
-    ) : PortfolioState()
+    ) : PortfolioState
 
-    object Empty: PortfolioState()
+    object Empty: PortfolioState
 }
 
 sealed class PortfolioIntent {
@@ -24,7 +31,7 @@ sealed class PortfolioSideEffect {
     object DisplayErrorFetchingData : PortfolioSideEffect()
 }
 
-class PortfolioViewModel() : ViewModel() {
+class PortfolioViewModel : ViewModel() {
 
     private val _state = MutableStateFlow<PortfolioState>(PortfolioState.Loading)
     val state: CStateFlow<PortfolioState> = _state.cStateFlow()
@@ -32,9 +39,10 @@ class PortfolioViewModel() : ViewModel() {
     private val _sideEffects = MutableSharedFlow<PortfolioSideEffect>()
     val sideEffects: CFlow<PortfolioSideEffect> = _sideEffects.cFlow()
 
+    private val coinsRepository: CoinsRepository by appDI.instance()
+
     fun obtainIntent(intent: PortfolioIntent) {
-        val state = state.value
-        when (state) {
+        when (val state = _state.value) {
             is PortfolioState.Loading -> reduceLoading(intent)
             is PortfolioState.Data -> reduceData(intent)
             is PortfolioState.Empty -> reduceEmpty(intent)
@@ -58,6 +66,19 @@ class PortfolioViewModel() : ViewModel() {
     }
 
     private fun fetchData() {
+        viewModelScope.launch {
+            val coins = coinsRepository.getAllCoins()
+                .map(::storageCoinToPortfolioCoin)
+            _state.value = PortfolioState.Data(coins)
+        }
+    }
 
+    private fun storageCoinToPortfolioCoin(coin: StorageCoin): PortfolioCoin {
+        return PortfolioCoin(
+            ticker = coin.ticker,
+            price = coin.price.toString(),
+            holdings = coin.holdings.toString(),
+            holdingsPrice = coin.holdingsPrice.toString()
+        )
     }
 }

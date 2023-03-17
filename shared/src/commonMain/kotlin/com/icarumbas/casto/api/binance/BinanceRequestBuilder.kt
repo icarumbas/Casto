@@ -3,6 +3,7 @@ package com.icarumbas.casto.api.binance
 import com.icarumbas.casto.api.CurrentTimeProvider
 import com.icarumbas.casto.platformSpecific.crypto.bytesToHexUTF8
 import com.icarumbas.casto.platformSpecific.crypto.hmacSha256
+import com.icarumbas.casto.storage.binance.BinanceSecureKeyProvider
 import io.ktor.client.request.*
 
 private const val BINANCE_BASE_URL = "https://api.binance.com"
@@ -12,13 +13,9 @@ private const val TIMESTAMP_KEY = "timestamp"
 private const val SECRET_HEADER = "X-MBX-APIKEY"
 
 class BinanceRequestBuilder(
-    private val secretProvider: SecretKeyProvider,
+    private val secureKeyProvider: BinanceSecureKeyProvider,
     private val currentTimeProvider: CurrentTimeProvider
 ) {
-
-    interface SecretKeyProvider {
-        suspend fun getPrivateKey(): String
-    }
 
     suspend fun apiRequest(
         urlString: String,
@@ -54,7 +51,7 @@ class BinanceRequestBuilder(
             val message = url.parameters.names().joinToString(separator = "&") { name ->
                 "${name}=${url.parameters[name]!!}"
             }
-            val hmac = hmacSha256(message, secretProvider.getPrivateKey())
+            val hmac = hmacSha256(message, secureKeyProvider.getPrivateKey())
             val signature = bytesToHexUTF8(hmac)
 
             headers {
