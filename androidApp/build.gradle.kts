@@ -1,7 +1,6 @@
 plugins {
     id(androidApp)
     kotlin(androidPlugin)
-    id(junit5) version Versions.junit5Plugin
 }
 
 android {
@@ -42,28 +41,5 @@ android {
 
 dependencies {
     implementation(project(":shared"))
-
-    with(Deps.Compose) {
-        val composeBom = platform(bom)
-        implementation(composeBom)
-        androidTestImplementation(composeBom)
-
-        implementation(material3)
-        implementation(toolingPreview)
-        debugImplementation(uiTooling)
-        implementation(activities)
-        implementation(viewModels)
-        implementation(iconsExtended)
-    }
-
-    with(Deps.Navigation) {
-        implementation(compose)
-        implementation(uiKtx)
-    }
-
-    with(Deps.JUnit5) {
-        testImplementation(api)
-        testRuntimeOnly(engine)
-    }
-
+    implementation(Deps.Compose.activities)
 }

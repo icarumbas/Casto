@@ -1,10 +1,17 @@
 plugins {
     kotlin(multiplatform)
     id(androidLib)
-    kotlin(serialization) version Versions.kotlin
+    id(kswift_plugin)
+    id(sqldelight_plugin)
+    kotlin(cocoapods)
 }
 
 kotlin {
+    android()
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
+
     android {
         compilations.all {
             kotlinOptions {
@@ -12,14 +19,19 @@ kotlin {
             }
         }
     }
-    
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach {
-        it.binaries.framework {
-            baseName = "shared"
+
+    cocoapods {
+        summary = "Some description for the Shared Module"
+        homepage = "Link to the Shared Module homepage"
+        ios.deploymentTarget = "15.0"
+        podfile = project.file("../iosApp/Podfile")
+        version = "1.0"
+        framework {
+            baseName = "MultiPlatformLibrary"
+            isStatic = false
+
+            export(Deps.MokoMvvm.core)
+            export(Deps.MokoMvvm.flow)
         }
     }
 
@@ -33,6 +45,10 @@ kotlin {
                     implementation(contentNegotiation)
                     implementation(jsonSerializer)
                 }
+                with(Deps.MokoMvvm) {
+                    implementation(core)
+                    implementation(flow)
+                }
                 implementation(Deps.Serialization.json)
                 implementation(Deps.DateTime.core)
             }
@@ -43,8 +59,25 @@ kotlin {
             }
         }
         val androidMain by getting {
+            dependsOn(commonMain)
             dependencies {
                 implementation(Deps.Ktor.android)
+
+                with(Deps.Compose) {
+                    val composeBom = platform(bom)
+                    implementation(composeBom)
+
+                    implementation(material3)
+                    implementation(toolingPreview)
+                    implementation(activities)
+                    implementation(viewModels)
+                    implementation(iconsExtended)
+                }
+
+                with(Deps.Navigation) {
+                    implementation(compose)
+                    implementation(uiKtx)
+                }
             }
         }
         val androidUnitTest by getting
@@ -74,11 +107,34 @@ kotlin {
 }
 
 android {
-    namespace = "com.icarumbas.casto"
     compileSdk = ConfigData.compileSdkVersion
-
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
         minSdk = ConfigData.minSdkVersion
         targetSdk = ConfigData.targetSdkVersion
     }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = Versions.composeKotlinCompiler
+    }
+}
+
+sqldelight {
+    databases {
+        create("Database") {
+            packageName.set("")
+            schemaOutputDirectory.set(file("src/commonMain/sqldelight/data/schema"))
+            migrationOutputDirectory.set(file("src/commonMain/sqldelight/data/migrations"))
+        }
+    }
+}
+
+kswift {
+    install(dev.icerock.moko.kswift.plugin.feature.SealedToSwiftEnumFeature)
 }

@@ -17,11 +17,6 @@ object Deps {
         const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
     }
 
-    object JUnit5 {
-        const val api = "org.junit.jupiter:junit-jupiter-api:${Versions.junit5}"
-        const val engine = "org.junit.jupiter:junit-jupiter-engine:${Versions.junit5}"
-    }
-
     object Ktor {
         const val core = "io.ktor:ktor-client-core:${Versions.ktor}"
         const val android = "io.ktor:ktor-client-okhttp:${Versions.ktor}"
@@ -41,5 +36,19 @@ object Deps {
     object Navigation {
         const val uiKtx = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
         const val compose = "androidx.navigation:navigation-compose:${Versions.navigation}"
+    }
+
+    object SqlDelight {
+        const val android = "app.cash.sqldelight:android-driver:${Versions.sqlDelight}"
+        const val native = "app.cash.sqldelight:native-driver:${Versions.sqlDelight}"
+    }
+
+    object Kodein {
+        const val core = "org.kodein.di:kodein-di:${Versions.kodein}"
+    }
+
+    object MokoMvvm {
+        const val core = "dev.icerock.moko:mvvm-core:${Versions.mokoMvvm}"
+        const val flow = "dev.icerock.moko:mvvm-flow:${Versions.mokoMvvm}"
     }
 }
