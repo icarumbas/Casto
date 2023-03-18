@@ -1,6 +1,6 @@
 package com.icarumbas.casto
 
-import com.icarumbas.casto.api.CurrentTimeProvider
+import com.icarumbas.casto.utils.CurrentTimeProvider
 import com.icarumbas.casto.api.binance.BinanceRequestBuilder
 import com.icarumbas.casto.storage.binance.BinanceSecureKeyProvider
 import io.mockk.coEvery

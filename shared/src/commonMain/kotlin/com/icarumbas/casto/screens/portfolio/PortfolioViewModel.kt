@@ -56,7 +56,9 @@ class PortfolioViewModel : ViewModel() {
     }
 
     private fun reduceData(intent: PortfolioIntent) {
-
+        when (intent) {
+            PortfolioIntent.EnterScreen -> fetchData()
+        }
     }
 
     private fun reduceEmpty(intent: PortfolioIntent) {

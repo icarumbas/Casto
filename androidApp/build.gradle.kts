@@ -42,4 +42,5 @@ android {
 dependencies {
     implementation(project(":shared"))
     implementation(Deps.Compose.activities)
+    implementation(Deps.Utils.napier)
 }

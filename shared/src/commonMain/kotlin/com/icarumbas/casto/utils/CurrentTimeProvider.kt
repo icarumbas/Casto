@@ -1,4 +1,4 @@
-package com.icarumbas.casto.api
+package com.icarumbas.casto.utils
 
 import kotlinx.datetime.Clock
 

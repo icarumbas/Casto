@@ -18,4 +18,5 @@ object Versions {
     const val kswift = "0.6.1"
     const val junit = "4.13.2"
     const val mockk = "1.13.4"
+    const val napier = "2.6.1"
 }

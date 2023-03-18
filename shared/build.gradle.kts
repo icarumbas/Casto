@@ -43,6 +43,7 @@ kotlin {
                 implementation(Deps.Serialization.json)
                 implementation(Deps.DateTime.core)
                 implementation(Deps.Kodein.core)
+                implementation(Deps.Utils.napier)
 
                 with(Deps.Ktor) {
                     implementation(core)

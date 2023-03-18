@@ -57,4 +57,8 @@ object Deps {
         const val junit = "junit:junit:${Versions.junit}"
         const val mockk = "io.mockk:mockk:${Versions.mockk}"
     }
+
+    object Utils {
+        const val napier = "io.github.aakira:napier:${Versions.napier}"
+    }
 }
