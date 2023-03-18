@@ -13,13 +13,14 @@ class CoinsRepositoryImpl(
 ) : CoinsRepository {
 
     override suspend fun getAllCoins(): List<StorageCoin>  {
-        return binanceApi.getUserCoins().map { coin ->
-            StorageCoin(
-                ticker = coin.coin,
-                price = 1.0,
-                holdings = coin.free,
-                holdingsPrice = 1.0
-            )
-        }
+        return binanceApi.getUserAssets()
+            .map { asset ->
+                StorageCoin(
+                    ticker = asset.asset,
+                    price = 1.0,
+                    holdings = asset.free + asset.locked,
+                    holdingsPrice = 1.0
+                )
+            }
     }
 }

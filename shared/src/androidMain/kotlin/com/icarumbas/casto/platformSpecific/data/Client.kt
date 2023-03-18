@@ -22,6 +22,7 @@ actual fun httpClient(config: HttpClientConfig<*>.() -> Unit) = HttpClient(OkHtt
         json(Json {
             isLenient = true
             ignoreUnknownKeys = true
+            prettyPrint = true
         })
     }
 }

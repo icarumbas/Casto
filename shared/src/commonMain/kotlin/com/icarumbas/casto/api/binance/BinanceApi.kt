@@ -1,6 +1,6 @@
 package com.icarumbas.casto.api.binance
 
-import com.icarumbas.casto.api.binance.models.BinanceUserCoinResponse
+import com.icarumbas.casto.api.binance.models.BinanceUserAssetResponse
 import io.github.aakira.napier.Napier
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -13,13 +13,19 @@ class BinanceApi(
     private val binanceRequestBuilder: BinanceRequestBuilder
 ) {
 
-    suspend fun getUserCoins(): List<BinanceUserCoinResponse> {
+    suspend fun getUserAssets(): List<BinanceUserAssetResponse> {
         val request = binanceRequestBuilder
-            .sapiRequest("capital/config/getall")
+            .sapiRequest("asset/getUserAsset")
         val response = client.get(request)
 
         return if (response.status.isSuccess()) {
-            response.body()
+            try {
+                response.body()
+            } catch (e: Throwable) {
+                val responseBody = response.body<String>()
+                Napier.e("$responseBody.", e)
+                emptyList()
+            }
         } else {
             val reqData = request.build().toString()
             Napier.e("Error getUserCoins with request: $reqData")
