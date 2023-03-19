@@ -1,6 +1,7 @@
 package com.icarumbas.casto.repository
 
 import com.icarumbas.casto.api.binance.BinanceApi
+import com.icarumbas.casto.api.icons.IconsService
 import com.icarumbas.casto.storage.models.StorageCoin
 
 interface CoinsRepository {
@@ -9,7 +10,8 @@ interface CoinsRepository {
 }
 
 class CoinsRepositoryImpl(
-    private val binanceApi: BinanceApi
+    private val binanceApi: BinanceApi,
+    private val iconsService: IconsService,
 ) : CoinsRepository {
 
     override suspend fun getAllCoins(): List<StorageCoin>  {

@@ -13,6 +13,12 @@ plugins {
     id(kswift_plugin).version(kswiftVersion).apply(false)
 }
 
+buildscript {
+    dependencies {
+        classpath("io.github.skeptick.libres:gradle-plugin:${Versions.libres}")
+    }
+}
+
 repositories {
     mavenCentral()
 }

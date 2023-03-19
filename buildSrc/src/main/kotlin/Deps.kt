@@ -60,5 +60,6 @@ object Deps {
 
     object Utils {
         const val napier = "io.github.aakira:napier:${Versions.napier}"
+        const val libresCompose = "io.github.skeptick.libres:libres-compose:${Versions.libres}"
     }
 }

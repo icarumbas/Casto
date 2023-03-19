@@ -5,6 +5,7 @@ plugins {
     id(sqldelight_plugin)
     kotlin(cocoapods)
     kotlin(serialization)
+    id(libres)
 }
 
 kotlin {
@@ -66,6 +67,7 @@ kotlin {
             dependencies {
                 implementation(Deps.Ktor.android)
                 implementation(Deps.MokoMvvm.flowCompose)
+                implementation(Deps.Utils.libresCompose)
 
                 with(Deps.Compose) {
                     val composeBom = platform(bom)
