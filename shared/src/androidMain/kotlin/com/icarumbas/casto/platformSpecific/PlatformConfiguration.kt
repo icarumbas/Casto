@@ -1,16 +1,16 @@
 package com.icarumbas.casto.platformSpecific
 
 import android.content.Context
+import okio.FileSystem
 import org.kodein.di.DI
 import org.kodein.di.bind
 
-actual class PlatformConfiguration(
+actual class PlatformConfigurationImpl(
     private val context: Context
-) {
+) : PlatformConfiguration {
 
-    actual fun getPlatformDiModule(): DI.Module? {
-        return DI.Module("platformConfiguration") {
+    override val getPlatformDiModule: DI.Module
+        get() = DI.Module("platformConfiguration") {
             bind<Context>(context)
         }
-    }
 }

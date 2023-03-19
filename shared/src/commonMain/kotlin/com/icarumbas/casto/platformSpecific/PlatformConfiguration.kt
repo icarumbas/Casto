@@ -2,7 +2,8 @@ package com.icarumbas.casto.platformSpecific
 
 import org.kodein.di.DI
 
-expect class PlatformConfiguration {
-
-    fun getPlatformDiModule(): DI.Module?
+interface PlatformConfiguration {
+    val getPlatformDiModule : DI.Module?
 }
+
+expect class PlatformConfigurationImpl : PlatformConfiguration

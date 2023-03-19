@@ -11,7 +11,7 @@ val appDI: DI
 fun setupAppDi(platformConfiguration: PlatformConfiguration) {
     _appDI = DI {
         importAll(repositoriesModule)
-        platformConfiguration.getPlatformDiModule()?.let {
+        platformConfiguration.getPlatformDiModule?.let {
             import(it)
         }
     }

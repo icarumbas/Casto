@@ -2,9 +2,8 @@ package com.icarumbas.casto.platformSpecific
 
 import org.kodein.di.DI
 
-actual class PlatformConfiguration {
+actual class PlatformConfigurationImpl : PlatformConfiguration {
 
-    actual fun getPlatformDiModule(): DI.Module? {
-        return null
-    }
+    override val getPlatformDiModule: DI.Module?
+        get() = null
 }

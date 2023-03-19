@@ -5,7 +5,7 @@ plugins {
     id(sqldelight_plugin)
     kotlin(cocoapods)
     kotlin(serialization)
-    id(libres)
+    id(libres_plugin)
 }
 
 kotlin {
@@ -45,6 +45,7 @@ kotlin {
                 implementation(Deps.DateTime.core)
                 implementation(Deps.Kodein.core)
                 implementation(Deps.Utils.napier)
+                implementation(Deps.Utils.okio)
 
                 with(Deps.Ktor) {
                     implementation(core)

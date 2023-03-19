@@ -1,3 +1,7 @@
 package com.icarumbas.casto.platformSpecific.data
 
-expect fun getFilesDirPath(): String
+import okio.FileSystem
+
+expect fun getApplicationFilesDirPath(): String
+
+expect fun getApplicationFilesystem(): FileSystem
