@@ -9,7 +9,6 @@ import com.icarumbas.casto.android.screens.CastoApp
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        filesDir
         setContent {
             AppTheme {
                 CastoApp()
