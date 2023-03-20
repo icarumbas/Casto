@@ -63,4 +63,9 @@ object Deps {
         const val libresCompose = "io.github.skeptick.libres:libres-compose:${Versions.libres}"
         const val okio = "com.squareup.okio:okio:${Versions.okio}"
     }
+
+    object Coil {
+        const val core = "io.coil-kt:coil:${Versions.coil}"
+        const val compose = "io.coil-kt:coil-compose:${Versions.coil}"
+    }
 }

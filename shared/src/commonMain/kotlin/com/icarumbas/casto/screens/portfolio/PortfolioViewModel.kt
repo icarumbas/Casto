@@ -78,6 +78,7 @@ class PortfolioViewModel : ViewModel() {
 
     private fun storageCoinToPortfolioCoin(coin: StorageCoin): PortfolioCoin {
         return PortfolioCoin(
+            iconPath = coin.iconPath,
             ticker = coin.ticker,
             price = coin.price.toString(),
             holdings = coin.holdings.toString(),

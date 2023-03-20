@@ -21,4 +21,5 @@ object Versions {
     const val napier = "2.6.1"
     const val libres = "1.1.6"
     const val okio = "3.3.0"
+    const val coil = "2.2.2"
 }

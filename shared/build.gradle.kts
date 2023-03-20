@@ -85,6 +85,11 @@ kotlin {
                     implementation(compose)
                     implementation(uiKtx)
                 }
+
+                with(Deps.Coil) {
+                    implementation(core)
+                    implementation(compose)
+                }
             }
         }
         val androidUnitTest by getting {

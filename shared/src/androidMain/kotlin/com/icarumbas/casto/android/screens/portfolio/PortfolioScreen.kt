@@ -1,5 +1,7 @@
 package com.icarumbas.casto.android.screens.portfolio
 
+import android.net.Uri
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -10,11 +12,20 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
+import coil.request.ImageRequest
+import com.icarumbas.casto.Res
 import com.icarumbas.casto.android.designsystem.AppTypography
 import com.icarumbas.casto.screens.portfolio.*
 import dev.icerock.moko.mvvm.flow.compose.observeAsActions
+import io.github.aakira.napier.Napier
+import io.github.skeptick.libres.compose.painterResource
 
 @Composable
 fun PortfolioScreen(
@@ -64,7 +75,7 @@ fun CoinCard(coin: PortfolioCoin) {
             .padding(padding)
             .fillMaxWidth()
     ) {
-//        Image(bitmap = coin.icon, contentDescription = null)
+        CoinIcon(path = coin.iconPath)
         Spacer(modifier = Modifier.size(padding))
         Column {
             Text(text = coin.ticker, style = AppTypography.titleMedium)
@@ -75,5 +86,28 @@ fun CoinCard(coin: PortfolioCoin) {
             Text(text = coin.holdingsPrice, style = AppTypography.labelMedium)
         }
     }
+}
 
+@Composable
+fun CoinIcon(path: String?) {
+    val thumbPainter = painterResource(image = Res.image.coin_logo_stub)
+    if (path != null) {
+        val imageRequest = ImageRequest.Builder(LocalContext.current)
+            .data(Uri.parse(path))
+            .crossfade(true)
+            .build()
+
+        val onError: ((AsyncImagePainter.State.Error) -> Unit) = { error ->
+            Napier.e("Error loading coin icon", error.result.throwable, "CoinIcon")
+        }
+
+        AsyncImage(
+            model = imageRequest,
+            contentDescription = null,
+            error = thumbPainter,
+            onError = onError
+        )
+    } else {
+        Image(painter = thumbPainter, contentDescription = null)
+    }
 }

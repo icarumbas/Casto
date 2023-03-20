@@ -19,9 +19,9 @@ class OkioFileStorage : FileStorage {
 
     override fun createDirectory(path: String): Path? {
         val dirPath = filesDir.div(path)
-        val meta = fileSystem.metadata(dirPath)
 
         if (fileSystem.exists(dirPath)) {
+            val meta = fileSystem.metadata(dirPath)
             if (meta.isDirectory) {
                 return dirPath
             } else {

@@ -9,7 +9,6 @@ import org.kodein.di.instance
 import org.kodein.di.singleton
 
 val binanceModule = DI.Module("binanceModule") {
-    importAll(coreApiModule, utilsModule, storageModule)
     bind<BinanceSecureKeyProvider>() with singleton {
         BinanceSecureKeyProvider(storage = instance())
     }

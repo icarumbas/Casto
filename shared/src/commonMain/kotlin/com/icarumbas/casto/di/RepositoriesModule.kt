@@ -8,8 +8,7 @@ import org.kodein.di.instance
 import org.kodein.di.singleton
 
 val repositoriesModule = DI.Module("repositoriesModule") {
-    importAll(binanceModule)
     bind<CoinsRepository>() with singleton {
-        CoinsRepositoryImpl(instance())
+        CoinsRepositoryImpl(instance(), instance(), instance())
     }
 }
