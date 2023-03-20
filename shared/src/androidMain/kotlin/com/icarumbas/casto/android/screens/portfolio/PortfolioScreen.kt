@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.unit.dp
@@ -91,6 +92,7 @@ fun CoinCard(coin: PortfolioCoin) {
 @Composable
 fun CoinIcon(path: String?) {
     val thumbPainter = painterResource(image = Res.image.coin_logo_stub)
+    val modifier = Modifier.size(40.dp)
     if (path != null) {
         val imageRequest = ImageRequest.Builder(LocalContext.current)
             .data(Uri.parse(path))
@@ -105,9 +107,15 @@ fun CoinIcon(path: String?) {
             model = imageRequest,
             contentDescription = null,
             error = thumbPainter,
-            onError = onError
+            onError = onError,
+            modifier = modifier,
+            contentScale = ContentScale.FillHeight
         )
     } else {
-        Image(painter = thumbPainter, contentDescription = null)
+        Image(
+            painter = thumbPainter,
+            contentDescription = null,
+            modifier = modifier,
+        )
     }
 }
