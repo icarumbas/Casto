@@ -5,25 +5,26 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
 import coil.request.ImageRequest
 import com.icarumbas.casto.Res
-import com.icarumbas.casto.android.designsystem.AppTypography
-import com.icarumbas.casto.screens.portfolio.*
+import com.icarumbas.casto.android.designsystem.ListItemHeadline
+import com.icarumbas.casto.android.designsystem.ListItemSupporting
+import com.icarumbas.casto.screens.portfolio.PortfolioCoin
+import com.icarumbas.casto.screens.portfolio.PortfolioIntent
+import com.icarumbas.casto.screens.portfolio.PortfolioState
+import com.icarumbas.casto.screens.portfolio.PortfolioViewModel
 import dev.icerock.moko.mvvm.flow.compose.observeAsActions
 import io.github.aakira.napier.Napier
 import io.github.skeptick.libres.compose.painterResource
@@ -41,7 +42,6 @@ fun PortfolioScreen(
         viewModel.obtainIntent(intent = PortfolioIntent.EnterScreen)
     })
 
-    Text(text = "Portfolio Screen")
     when (val state = viewState) {
         is PortfolioState.Data -> {
             CoinsList(coinsData = state.items)
@@ -54,8 +54,13 @@ fun PortfolioScreen(
 }
 
 @Composable
-fun CoinsList(coinsData: List<PortfolioCoin>) {
-    LazyColumn(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+fun CoinsList(
+    coinsData: List<PortfolioCoin>
+) {
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = Modifier.padding(16.dp)
+    ) {
         items(
             items = coinsData,
             key = { message ->
@@ -68,23 +73,24 @@ fun CoinsList(coinsData: List<PortfolioCoin>) {
 }
 
 @Composable
-fun CoinCard(coin: PortfolioCoin) {
+fun CoinCard(
+    coin: PortfolioCoin
+) {
     val padding = 16.dp
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .padding(padding)
-            .fillMaxWidth()
+        modifier = Modifier.fillMaxWidth()
     ) {
         CoinIcon(path = coin.iconPath)
         Spacer(modifier = Modifier.size(padding))
         Column {
-            Text(text = coin.ticker, style = AppTypography.titleMedium)
-            Text(text = coin.price, style = AppTypography.labelMedium)
+            ListItemHeadline(text = coin.ticker)
+            ListItemSupporting(text = coin.price)
         }
-        Column(horizontalAlignment = Alignment.End) {
-            Text(text = coin.holdings, style = AppTypography.titleMedium)
-            Text(text = coin.holdingsPrice, style = AppTypography.labelMedium)
+        Spacer(modifier = Modifier.weight(1f, true))
+        Column {
+            ListItemHeadline(text = coin.holdings)
+            ListItemSupporting(text = coin.holdingsPrice, Modifier.align(Alignment.End))
         }
     }
 }
