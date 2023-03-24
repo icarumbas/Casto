@@ -6,15 +6,16 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.util.*
 
-private const val ICONS_BASE_URL = "https://cryptoicons.org/api/icon"
-private const val ICON_SIZE = 64
+private const val ICONS_BASE_URL = "https://casto.fly.dev/icons"
 
 class TemporaryIconsService(
     private val client: HttpClient
 ) : IconsService {
 
     override suspend fun getIcon(ticker: String): ByteArray? {
-        val response = client.get("$ICONS_BASE_URL/${ticker.lowercase()}/$ICON_SIZE")
+        val response = client.get("$ICONS_BASE_URL") {
+            url.appendEncodedPathSegments(ticker)
+        }
         if (response.status.isSuccess()) {
             return response.bodyAsChannel().toByteArray()
         } else {
