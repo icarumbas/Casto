@@ -18,14 +18,14 @@ class CoinsRepository(
         return binanceApi.getUserAssets()
             .map { asset ->
                 // todo handle nullable
-                val marketData = marketDataRepository.getMarketData(asset.asset)!!
+                val marketData = marketDataRepository.getMarketData(asset.asset)
                 DomainCoin(
                     iconPath = getIconPath(asset.asset),
                     ticker = asset.asset,
-                    price = marketData.priceUsd,
-                    priceChangePercent24 = marketData.changePercent24Hr,
+                    price = marketData?.priceUsd ?: 0.0,
+                    priceChangePercent24 = marketData?.changePercent24Hr ?: 0.0,
                     holdings = asset.free + asset.locked,
-                    holdingsPrice = (asset.free + asset.locked) * marketData.priceUsd
+                    holdingsPrice = (asset.free + asset.locked) * (marketData?.priceUsd ?: 0.0)
                 )
             }
     }

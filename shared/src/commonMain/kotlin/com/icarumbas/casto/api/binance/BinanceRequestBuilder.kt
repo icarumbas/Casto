@@ -7,7 +7,7 @@ import com.icarumbas.casto.storage.binance.BinanceSecureKeyProvider
 import io.ktor.client.request.*
 
 private const val BINANCE_BASE_URL = "https://api.binance.com"
-private const val BINANCE_SAPI_ENDPOINT = "sapi/v1"
+private const val BINANCE_SAPI_ENDPOINT = "sapi/v3"
 private const val BINANCE_API_ENDPOINT = "api/v3"
 private const val TIMESTAMP_KEY = "timestamp"
 private const val APIKEY_HEADER = "X-MBX-APIKEY"
@@ -48,7 +48,7 @@ class BinanceRequestBuilder(
                 parameters.removeKeysWithNoEntries()
                 parameters.append(
                     TIMESTAMP_KEY,
-                    currentTimeProvider.getCurrentTimeMils().toString()
+                    (currentTimeProvider.getCurrentTimeMils() - 1000).toString()
                 )
             }
 

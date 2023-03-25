@@ -16,7 +16,7 @@ class BinanceApi(
     suspend fun getUserAssets(): List<BinanceUserAssetResponse> {
         val request = binanceRequestBuilder
             .sapiRequest("asset/getUserAsset")
-        val response = client.get(request)
+        val response = client.post(request)
 
         return if (response.status.isSuccess()) {
             try {
@@ -27,8 +27,7 @@ class BinanceApi(
                 emptyList()
             }
         } else {
-            val reqData = request.build().toString()
-            Napier.e("Error getUserCoins with request: $reqData")
+            Napier.e("Error getUserCoins: ${response.body<String>()}")
             emptyList()
         }
     }
