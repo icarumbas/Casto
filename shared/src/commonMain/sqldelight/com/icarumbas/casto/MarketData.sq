@@ -1,0 +1,14 @@
+CREATE TABLE MarketData (
+    ticker TEXT PRIMARY KEY,
+    changePercent24Hr REAL,
+    priceUsd REAL
+);
+
+insert:
+INSERT INTO MarketData(ticker, changePercent24Hr, priceUsd)
+VALUES (?, ?, ?);
+
+selectByTicker:
+SELECT *
+FROM MarketData
+WHERE ticker = ?;

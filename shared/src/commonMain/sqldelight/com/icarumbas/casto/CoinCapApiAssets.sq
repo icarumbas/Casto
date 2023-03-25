@@ -1,0 +1,13 @@
+CREATE TABLE CoinCapApiAssets (
+    ticker TEXT PRIMARY KEY,
+    id TEXT
+);
+
+insert:
+INSERT INTO CoinCapApiIds(ticker, id)
+VALUES (?, ?);
+
+selectByTicker:
+SELECT id
+FROM CoinCapApiIds
+WHERE ticker = ?;

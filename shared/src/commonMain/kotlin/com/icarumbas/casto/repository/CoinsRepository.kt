@@ -2,6 +2,7 @@ package com.icarumbas.casto.repository
 
 import com.icarumbas.casto.api.binance.BinanceApi
 import com.icarumbas.casto.api.icons.IconsService
+import com.icarumbas.casto.api.market.MarketDataService
 import com.icarumbas.casto.storage.icons.IconsStorage
 import com.icarumbas.casto.storage.models.StorageCoin
 
@@ -14,6 +15,7 @@ class CoinsRepositoryImpl(
     private val binanceApi: BinanceApi,
     private val iconsService: IconsService,
     private val iconsStorage: IconsStorage,
+    private val marketDataService: MarketDataService,
 ) : CoinsRepository {
 
     override suspend fun getAllCoins(): List<StorageCoin>  {

@@ -1,8 +1,10 @@
 package com.icarumbas.casto.di
 
-import com.icarumbas.casto.storage.files.OkioFileStorage
+import com.icarumbas.casto.Database
+import com.icarumbas.casto.platformSpecific.data.createDatabase
 import com.icarumbas.casto.storage.SecureKeyStorage
 import com.icarumbas.casto.storage.files.FileStorage
+import com.icarumbas.casto.storage.files.OkioFileStorage
 import com.icarumbas.casto.storage.icons.IconsStorage
 import com.icarumbas.casto.storage.icons.LocalIconsStorage
 import org.kodein.di.DI
@@ -19,5 +21,8 @@ val storageModule = DI.Module("storageModule") {
     }
     bind<IconsStorage>() with singleton {
         LocalIconsStorage(instance())
+    }
+    bind<Database>() with singleton {
+        createDatabase(instance())
     }
 }

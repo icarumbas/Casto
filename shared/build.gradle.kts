@@ -69,6 +69,7 @@ kotlin {
                 implementation(Deps.Ktor.android)
                 implementation(Deps.MokoMvvm.flowCompose)
                 implementation(Deps.Utils.libresCompose)
+                implementation(Deps.SqlDelight.android)
 
                 with(Deps.Compose) {
                     val composeBom = platform(bom)
@@ -107,6 +108,7 @@ kotlin {
             dependsOn(commonMain)
             dependencies {
                 implementation(Deps.Ktor.ios)
+                implementation(Deps.SqlDelight.native)
             }
 
             iosX64Main.dependsOn(this)
@@ -147,9 +149,7 @@ android {
 sqldelight {
     databases {
         create("Database") {
-            packageName.set("")
-            schemaOutputDirectory.set(file("src/commonMain/sqldelight/data/schema"))
-            migrationOutputDirectory.set(file("src/commonMain/sqldelight/data/migrations"))
+            packageName.set("com.icarumbas.casto")
         }
     }
 }

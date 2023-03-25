@@ -10,13 +10,14 @@ val appDI: DI
 
 fun setupAppDi(platformConfiguration: PlatformConfiguration) {
     _appDI = DI {
-        platformConfiguration.getPlatformDiModule?.let {
-            import(it)
-        }
-        importAll(coreApiModule,
+        importAll(
+            platformConfiguration.getPlatformDiModule,
+            coreApiModule,
             utilsModule,
             storageModule,
             repositoriesModule,
-            binanceModule)
+            binanceModule,
+            coinCapModule,
+        )
     }
 }
