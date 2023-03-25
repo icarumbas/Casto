@@ -1,30 +1,59 @@
 package com.icarumbas.casto.api.market
 
-import com.icarumbas.casto.CoinCapApiIdsQueries
+import com.icarumbas.casto.api.market.models.CoinCapAssetResponse
+import com.icarumbas.casto.api.market.models.CoinCapSearchAssetResponse
+import io.github.aakira.napier.Napier
 import io.ktor.client.*
+import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 
 private const val BASE_URL = "api.coincap.io/v2"
 private const val SEARCH_PARAM = "search"
 
-class CoinCapMarketDataService(
-    private val coinCapIdsQueries: CoinCapApiIdsQueries,
+class CoinCapMarketDataApi(
     private val client: HttpClient,
-) : MarketDataService {
+) {
 
-    override suspend fun getCoinPrice(ticker: String): Double {
-        val coinCapId = coinCapIdsQueries.selectByTicker(ticker).executeAsOneOrNull()?.id
+    suspend fun getCoinCapAsset(id: String): CoinCapSearchAssetResponse? {
+        val response = client.get(BASE_URL) {
+            url {
+                appendPathSegments("assets", id)
+            }
+        }
 
+        return if (response.status.isSuccess()) {
+            try {
+                response.body()
+            } catch (e: Throwable) {
+                val responseBody = response.body<String>()
+                Napier.e("$responseBody.", e)
+                null
+            }
+        } else {
+            Napier.e("Error getCoinCapAsset with response: $response")
+            null
+        }
     }
 
-    private suspend fun getTickerId(ticker: String): String {
+    suspend fun searchCoinCapAssets(ticker: String): CoinCapSearchAssetResponse? {
         val response = client.get(BASE_URL) {
             url {
                 appendPathSegments("/assets")
                 parameters.append(SEARCH_PARAM, ticker)
             }
         }
-        val
+        return if (response.status.isSuccess()) {
+            try {
+                response.body()
+            } catch (e: Throwable) {
+                val responseBody = response.body<String>()
+                Napier.e("$responseBody.", e)
+                null
+            }
+        } else {
+            Napier.e("Error searchCoinCapAssets with response: $response")
+            null
+        }
     }
 }

@@ -1,12 +1,13 @@
-CREATE TABLE MarketData (
+CREATE TABLE IF NOT EXISTS MarketData (
     ticker TEXT PRIMARY KEY,
-    changePercent24Hr REAL,
-    priceUsd REAL
+    changePercent24Hr REAL NOT NULL,
+    priceUsd REAL NOT NULL,
+    lastUpdate INTEGER NOT NULL
 );
 
 insert:
-INSERT INTO MarketData(ticker, changePercent24Hr, priceUsd)
-VALUES (?, ?, ?);
+INSERT OR REPLACE INTO MarketData(ticker, changePercent24Hr, priceUsd, lastUpdate)
+VALUES (?, ?, ?, ?);
 
 selectByTicker:
 SELECT *

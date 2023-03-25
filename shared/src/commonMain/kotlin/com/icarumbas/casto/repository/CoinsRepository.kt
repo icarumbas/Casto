@@ -1,32 +1,31 @@
 package com.icarumbas.casto.repository
 
+import MarketDataRepository
 import com.icarumbas.casto.api.binance.BinanceApi
-import com.icarumbas.casto.api.icons.IconsService
-import com.icarumbas.casto.api.market.MarketDataService
+import com.icarumbas.casto.api.icons.IconsApi
 import com.icarumbas.casto.storage.icons.IconsStorage
-import com.icarumbas.casto.storage.models.StorageCoin
+import com.icarumbas.casto.models.DomainCoin
 
-interface CoinsRepository {
 
-    suspend fun getAllCoins(): List<StorageCoin>
-}
-
-class CoinsRepositoryImpl(
+class CoinsRepository(
     private val binanceApi: BinanceApi,
-    private val iconsService: IconsService,
+    private val iconsApi: IconsApi,
     private val iconsStorage: IconsStorage,
-    private val marketDataService: MarketDataService,
-) : CoinsRepository {
+    private val marketDataRepository: MarketDataRepository,
+) {
 
-    override suspend fun getAllCoins(): List<StorageCoin>  {
+    suspend fun getAllCoins(): List<DomainCoin>  {
         return binanceApi.getUserAssets()
             .map { asset ->
-                StorageCoin(
+                // todo handle nullable
+                val marketData = marketDataRepository.getMarketData(asset.asset)!!
+                DomainCoin(
                     iconPath = getIconPath(asset.asset),
                     ticker = asset.asset,
-                    price = 1.0,
+                    price = marketData.priceUsd,
+                    priceChangePercent24 = marketData.changePercent24Hr,
                     holdings = asset.free + asset.locked,
-                    holdingsPrice = 1.0
+                    holdingsPrice = (asset.free + asset.locked) * marketData.priceUsd
                 )
             }
     }
@@ -35,7 +34,7 @@ class CoinsRepositoryImpl(
         if (iconsStorage.exists(ticker)) {
             return iconsStorage.getRelativePath(ticker)
         } else {
-            val data = iconsService.getIcon(ticker)
+            val data = iconsApi.getIcon(ticker)
             if (data != null) {
                 iconsStorage.save(ticker, data)
                 return iconsStorage.getRelativePath(ticker)

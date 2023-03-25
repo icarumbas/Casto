@@ -17,7 +17,7 @@ fun setupAppDi(platformConfiguration: PlatformConfiguration) {
             storageModule,
             repositoriesModule,
             binanceModule,
-            coinCapModule,
+            marketDataModule,
         )
     }
 }

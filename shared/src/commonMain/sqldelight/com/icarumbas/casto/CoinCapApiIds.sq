@@ -1,10 +1,10 @@
-CREATE TABLE CoinCapApiAssets (
+CREATE TABLE IF NOT EXISTS CoinCapApiIds (
     ticker TEXT PRIMARY KEY,
-    id TEXT
+    id TEXT UNIQUE NOT NULL
 );
 
 insert:
-INSERT INTO CoinCapApiIds(ticker, id)
+INSERT OR REPLACE INTO CoinCapApiIds(ticker, id)
 VALUES (?, ?);
 
 selectByTicker:

@@ -4,5 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CoinCapSearchAssetResponse(
-    val data: List<CoinCapAssetResponse>
+    val data: List<CoinCapAssetResponse>,
+    val timestamp: Long,
 )
