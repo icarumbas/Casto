@@ -2,14 +2,14 @@ package com.icarumbas.casto.repository
 
 import MarketDataRepository
 import com.icarumbas.casto.api.binance.BinanceApi
-import com.icarumbas.casto.api.icons.IconsApi
+import com.icarumbas.casto.api.icons.CastoIconsApi
 import com.icarumbas.casto.storage.icons.IconsStorage
 import com.icarumbas.casto.models.DomainCoin
 
 
 class CoinsRepository(
     private val binanceApi: BinanceApi,
-    private val iconsApi: IconsApi,
+    private val iconsApi: CastoIconsApi,
     private val iconsStorage: IconsStorage,
     private val marketDataRepository: MarketDataRepository,
 ) {

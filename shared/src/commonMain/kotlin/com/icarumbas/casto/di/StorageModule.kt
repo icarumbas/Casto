@@ -1,8 +1,8 @@
 package com.icarumbas.casto.di
 
 import com.icarumbas.casto.Database
-import com.icarumbas.casto.platformSpecific.data.createDatabase
 import com.icarumbas.casto.storage.SecureKeyStorage
+import com.icarumbas.casto.storage.createDatabase
 import com.icarumbas.casto.storage.files.FileStorage
 import com.icarumbas.casto.storage.files.OkioFileStorage
 import com.icarumbas.casto.storage.icons.IconsStorage
