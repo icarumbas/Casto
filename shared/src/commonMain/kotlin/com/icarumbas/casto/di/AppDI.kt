@@ -18,6 +18,7 @@ fun setupAppDi(platformConfiguration: PlatformConfiguration) {
             repositoriesModule,
             binanceModule,
             marketDataModule,
+            castoApiModule,
         )
     }
 }

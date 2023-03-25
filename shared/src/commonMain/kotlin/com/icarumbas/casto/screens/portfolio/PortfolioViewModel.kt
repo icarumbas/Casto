@@ -2,7 +2,7 @@ package com.icarumbas.casto.screens.portfolio
 
 import com.icarumbas.casto.di.appDI
 import com.icarumbas.casto.repository.CoinsRepository
-import com.icarumbas.casto.storage.models.StorageCoin
+import com.icarumbas.casto.models.DomainCoin
 import dev.icerock.moko.mvvm.flow.CFlow
 import dev.icerock.moko.mvvm.flow.CStateFlow
 import dev.icerock.moko.mvvm.flow.cFlow
@@ -76,13 +76,23 @@ class PortfolioViewModel : ViewModel() {
         }
     }
 
-    private fun storageCoinToPortfolioCoin(coin: StorageCoin): PortfolioCoin {
+    private fun storageCoinToPortfolioCoin(coin: DomainCoin): PortfolioCoin {
+        val priceChangeStr = coin.priceChangePercent24.toString()
+        val priceIncrease = coin.priceChangePercent24 >= 0
+        val take = if (priceIncrease) {
+            4
+        } else {
+            5
+        }
+        val priceChangePercent = priceChangeStr.take(take)
         return PortfolioCoin(
             iconPath = coin.iconPath,
             ticker = coin.ticker,
             price = coin.price.toString(),
             holdings = coin.holdings.toString(),
-            holdingsPrice = coin.holdingsPrice.toString()
+            holdingsPrice = coin.holdingsPrice.toString(),
+            priceChangePercent = priceChangePercent,
+            priceIncrease = priceIncrease
         )
     }
 }

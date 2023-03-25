@@ -4,6 +4,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 
 @Composable
 fun ListItemHeadline(text: String, modifier: Modifier = Modifier) {
@@ -18,9 +19,13 @@ fun ListItemHeadline(text: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ListItemSupporting(text: String, modifier: Modifier = Modifier) {
+fun ListItemSupporting(
+    text: String,
+    modifier: Modifier = Modifier,
+    color: Color = MaterialTheme.colorScheme.onSurfaceVariant
+) {
     val style = AppTypography.bodyMedium.copy(
-        color = MaterialTheme.colorScheme.onSurfaceVariant
+        color = color
     )
     Text(
         text = text,

@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -85,7 +86,16 @@ fun CoinCard(
         Spacer(modifier = Modifier.size(padding))
         Column {
             ListItemHeadline(text = coin.ticker)
-            ListItemSupporting(text = coin.price)
+            Row {
+                ListItemSupporting(text = coin.price)
+                val color = if (coin.priceIncrease) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.onError
+                }
+                ListItemSupporting(text = coin.priceChangePercent, color = color)
+            }
+            
         }
         Spacer(modifier = Modifier.weight(1f, true))
         Column {

@@ -8,12 +8,12 @@ import io.ktor.util.*
 
 private const val ICONS_BASE_URL = "https://casto.fly.dev/icons"
 
-class TemporaryIconsService(
+class CastoIconsApi(
     private val client: HttpClient
-) : IconsService {
+) : IconsApi {
 
     override suspend fun getIcon(ticker: String): ByteArray? {
-        val response = client.get("$ICONS_BASE_URL") {
+        val response = client.get(ICONS_BASE_URL) {
             url.appendEncodedPathSegments(ticker)
         }
         if (response.status.isSuccess()) {

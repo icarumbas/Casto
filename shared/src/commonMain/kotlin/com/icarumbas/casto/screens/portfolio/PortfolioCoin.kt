@@ -5,5 +5,7 @@ data class PortfolioCoin(
     val ticker: String,
     val price: String,
     val holdings: String,
-    val holdingsPrice: String
+    val holdingsPrice: String,
+    val priceChangePercent: String,
+    val priceIncrease: Boolean,
 )
