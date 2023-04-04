@@ -88,6 +88,7 @@ fun CoinCard(
             ListItemHeadline(text = coin.ticker)
             Row {
                 ListItemSupporting(text = coin.price)
+                Spacer(modifier = Modifier.size(4.dp))
                 val color = if (coin.priceIncrease) {
                     MaterialTheme.colorScheme.primary
                 } else {

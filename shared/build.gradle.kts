@@ -46,6 +46,7 @@ kotlin {
                 implementation(Deps.Kodein.core)
                 implementation(Deps.Utils.napier)
                 implementation(Deps.Utils.okio)
+                implementation(Deps.SqlDelight.coroutines)
 
                 with(Deps.Ktor) {
                     implementation(core)

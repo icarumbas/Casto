@@ -1,0 +1,18 @@
+CREATE TABLE IF NOT EXISTS HoldingsInfo (
+    id TEXT PRIMARY KEY,
+    sourceId TEXT NOT NULL,
+    holdings REAL NOT NULL
+);
+
+insert:
+INSERT OR REPLACE INTO HoldingsInfo(id, sourceId, holdings)
+VALUES (?, ?, ?);
+
+selectAll:
+SELECT * FROM HoldingsInfo;
+
+selectWithPricesAndInfo:
+SELECT * FROM HoldingsInfo
+JOIN CoinsPrice ON HoldingsInfo.id = CoinsPrice.id
+JOIN CoinsInfo ON HoldingsInfo.id = CoinsInfo.id;
+

@@ -1,0 +1,17 @@
+CREATE TABLE IF NOT EXISTS CoinsInfo (
+    id TEXT PRIMARY KEY,
+    ticker TEXT,
+    name TEXT NOT NULL
+);
+
+insert:
+INSERT OR REPLACE INTO CoinsInfo(id, ticker, name)
+VALUES (?, ?, ?);
+
+selectById:
+SELECT * FROM CoinsInfo
+WHERE id = ?;
+
+selectAllById:
+SELECT * FROM CoinsInfo
+WHERE id IN ?;

@@ -1,0 +1,33 @@
+CREATE TABLE IF NOT EXISTS CoinsPrice (
+    id TEXT PRIMARY KEY,
+    price REAL NOT NULL,
+    changePercent1h REAL NOT NULL,
+    changePercent24h REAL NOT NULL,
+    changePercent7d REAL NOT NULL,
+    changePercent14d REAL NOT NULL,
+    changePercent30d REAL NOT NULL,
+    changePercent60d REAL NOT NULL,
+    changePercent1y REAL NOT NULL
+);
+
+insert:
+INSERT OR REPLACE INTO CoinsPrice(
+    id,
+    price,
+    changePercent1h,
+    changePercent24h,
+    changePercent7d,
+    changePercent14d,
+    changePercent30d,
+    changePercent60d,
+    changePercent1y
+)
+VALUES (?,?,?,?,?,?, ?,?,?);
+
+selectById:
+SELECT * FROM CoinsPrice
+WHERE id = ?;
+
+selectAllById:
+SELECT * FROM CoinsPrice
+WHERE id IN ?;

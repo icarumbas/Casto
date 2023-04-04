@@ -15,6 +15,7 @@ object Versions {
     const val sqlDelight = "2.0.0-alpha05"
     const val kodein = "7.17.0"
     const val mokoMvvm = "0.15.0"
+    const val orbitMvi = "4.6.1"
     const val kswift = "0.6.1"
     const val junit = "4.13.2"
     const val mockk = "1.13.4"

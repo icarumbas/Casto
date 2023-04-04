@@ -1,8 +1,6 @@
 package com.icarumbas.casto.screens.portfolio
 
 import com.icarumbas.casto.di.appDI
-import com.icarumbas.casto.repository.CoinsRepository
-import com.icarumbas.casto.models.DomainCoin
 import dev.icerock.moko.mvvm.flow.CFlow
 import dev.icerock.moko.mvvm.flow.CStateFlow
 import dev.icerock.moko.mvvm.flow.cFlow
@@ -14,15 +12,10 @@ import kotlinx.coroutines.launch
 import org.kodein.di.instance
 
 
-sealed interface PortfolioState {
-    object Loading : PortfolioState
-
-    data class Data(
-        val items: List<PortfolioCoin>,
-    ) : PortfolioState
-
-    object Empty: PortfolioState
-}
+data class PortfolioState(
+    var isLoading: Boolean = true,
+    var items: List<PortfolioCoin> = emptyList(),
+)
 
 sealed class PortfolioIntent {
     object EnterScreen : PortfolioIntent()
@@ -34,7 +27,7 @@ sealed class PortfolioSideEffect {
 
 class PortfolioViewModel : ViewModel() {
 
-    private val _state = MutableStateFlow<PortfolioState>(PortfolioState.Loading)
+    private val _state = MutableStateFlow(PortfolioState())
     val state: CStateFlow<PortfolioState> = _state.cStateFlow()
 
     private val _sideEffects = MutableSharedFlow<PortfolioSideEffect>()
@@ -43,40 +36,22 @@ class PortfolioViewModel : ViewModel() {
     private val coinsRepository: CoinsRepository by appDI.instance()
 
     fun obtainIntent(intent: PortfolioIntent) {
-        when (val state = _state.value) {
-            is PortfolioState.Loading -> reduceLoading(intent)
-            is PortfolioState.Data -> reduceData(intent)
-            is PortfolioState.Empty -> reduceEmpty(intent)
-        }
-    }
-
-    private fun reduceLoading(intent: PortfolioIntent) {
         when (intent) {
-            PortfolioIntent.EnterScreen -> fetchData()
-        }
-    }
-
-    private fun reduceData(intent: PortfolioIntent) {
-        when (intent) {
-            PortfolioIntent.EnterScreen -> fetchData()
-        }
-    }
-
-    private fun reduceEmpty(intent: PortfolioIntent) {
-        when (intent) {
-            PortfolioIntent.EnterScreen -> fetchData()
+            is PortfolioIntent.EnterScreen -> {
+                fetchData()
+            }
         }
     }
 
     private fun fetchData() {
         viewModelScope.launch {
-            val coins = coinsRepository.getAllCoins()
+            val coins = coinsRepository.loadBinancePortfolio()
                 .map(::storageCoinToPortfolioCoin)
-            _state.value = PortfolioState.Data(coins)
+            _state.value = PortfolioState(false, coins)
         }
     }
 
-    private fun storageCoinToPortfolioCoin(coin: DomainCoin): PortfolioCoin {
+    private fun storageCoinToPortfolioCoin(coin: CoinAccountData): PortfolioCoin {
         val priceChangeStr = coin.priceChangePercent24.toString()
         val priceIncrease = coin.priceChangePercent24 >= 0
         val take = if (priceIncrease) {
