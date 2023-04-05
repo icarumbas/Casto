@@ -1,6 +1,6 @@
 package com.icarumbas.casto.screens.portfolio
 
-data class PortfolioCoin(
+data class PortfolioCoinItem(
     val iconPath: String?,
     val ticker: String,
     val price: String,

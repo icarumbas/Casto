@@ -1,5 +1,5 @@
 package com.icarumbas.casto.api.icons
 
-interface CastoIconsApi {
+interface IconsApi {
     suspend fun getIcon(ticker: String): ByteArray?
 }

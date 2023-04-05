@@ -8,9 +8,9 @@ import io.ktor.util.*
 
 private const val ICONS_BASE_URL = "https://casto.fly.dev/icons"
 
-class CastoIconsApiImpl(
+class IconsApiImpl(
     private val client: HttpClient
-) : CastoIconsApi {
+) : IconsApi {
 
     override suspend fun getIcon(ticker: String): ByteArray? {
         val response = client.get(ICONS_BASE_URL) {

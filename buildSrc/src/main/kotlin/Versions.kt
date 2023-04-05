@@ -23,4 +23,5 @@ object Versions {
     const val libres = "1.1.6"
     const val okio = "3.3.0"
     const val coil = "2.2.2"
+    const val settings = "1.0.0"
 }

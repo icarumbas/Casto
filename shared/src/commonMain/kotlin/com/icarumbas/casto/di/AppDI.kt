@@ -14,11 +14,9 @@ fun setupAppDi(platformConfiguration: PlatformConfiguration) {
             platformConfiguration.getPlatformDiModule,
             coreApiModule,
             utilsModule,
-            storageModule,
-            repositoriesModule,
-            binanceModule,
             marketDataModule,
-            castoApiModule,
+            iconsModule,
+            userModule,
         )
     }
 }

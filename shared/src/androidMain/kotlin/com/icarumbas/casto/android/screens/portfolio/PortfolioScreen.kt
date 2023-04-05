@@ -22,7 +22,7 @@ import coil.request.ImageRequest
 import com.icarumbas.casto.Res
 import com.icarumbas.casto.android.designsystem.ListItemHeadline
 import com.icarumbas.casto.android.designsystem.ListItemSupporting
-import com.icarumbas.casto.screens.portfolio.PortfolioCoin
+import com.icarumbas.casto.screens.portfolio.PortfolioCoinItem
 import com.icarumbas.casto.screens.portfolio.PortfolioIntent
 import com.icarumbas.casto.screens.portfolio.PortfolioState
 import com.icarumbas.casto.screens.portfolio.PortfolioViewModel
@@ -56,7 +56,7 @@ fun PortfolioScreen(
 
 @Composable
 fun CoinsList(
-    coinsData: List<PortfolioCoin>
+    coinsData: List<PortfolioCoinItem>
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -75,7 +75,7 @@ fun CoinsList(
 
 @Composable
 fun CoinCard(
-    coin: PortfolioCoin
+    coin: PortfolioCoinItem
 ) {
     val padding = 16.dp
     Row(

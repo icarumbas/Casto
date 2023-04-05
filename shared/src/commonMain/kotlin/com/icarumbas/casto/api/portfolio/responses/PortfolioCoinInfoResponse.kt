@@ -8,6 +8,6 @@ data class PortfolioCoinInfoResponse(
     val ticker: String,
     val name: String,
     val price: Float,
-    val holdingsPrice: Float,
+    val holdings: Float,
     val priceChangePercent: PortfolioCoinIPriceChangeResponse,
 )

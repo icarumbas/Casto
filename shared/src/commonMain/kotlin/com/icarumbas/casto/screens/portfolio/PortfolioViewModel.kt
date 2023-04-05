@@ -1,6 +1,8 @@
 package com.icarumbas.casto.screens.portfolio
 
+import PortfolioService
 import com.icarumbas.casto.di.appDI
+import com.icarumbas.casto.models.PortfolioCoinData
 import dev.icerock.moko.mvvm.flow.CFlow
 import dev.icerock.moko.mvvm.flow.CStateFlow
 import dev.icerock.moko.mvvm.flow.cFlow
@@ -8,13 +10,14 @@ import dev.icerock.moko.mvvm.flow.cStateFlow
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.kodein.di.instance
 
 
 data class PortfolioState(
     var isLoading: Boolean = true,
-    var items: List<PortfolioCoin> = emptyList(),
+    var items: List<PortfolioCoinItem> = emptyList(),
 )
 
 sealed class PortfolioIntent {
@@ -33,7 +36,7 @@ class PortfolioViewModel : ViewModel() {
     private val _sideEffects = MutableSharedFlow<PortfolioSideEffect>()
     val sideEffects: CFlow<PortfolioSideEffect> = _sideEffects.cFlow()
 
-    private val coinsRepository: CoinsRepository by appDI.instance()
+    private val portfolioService: PortfolioService by appDI.instance()
 
     fun obtainIntent(intent: PortfolioIntent) {
         when (intent) {
@@ -45,22 +48,18 @@ class PortfolioViewModel : ViewModel() {
 
     private fun fetchData() {
         viewModelScope.launch {
-            val coins = coinsRepository.loadBinancePortfolio()
-                .map(::storageCoinToPortfolioCoin)
-            _state.value = PortfolioState(false, coins)
+            portfolioService.portfolioFlow.onEach {
+                val
+                _state.value = _state.value.copy(items = )
+            }
         }
     }
 
-    private fun storageCoinToPortfolioCoin(coin: CoinAccountData): PortfolioCoin {
-        val priceChangeStr = coin.priceChangePercent24.toString()
-        val priceIncrease = coin.priceChangePercent24 >= 0
-        val take = if (priceIncrease) {
-            4
-        } else {
-            5
-        }
-        val priceChangePercent = priceChangeStr.take(take)
-        return PortfolioCoin(
+    private fun storageCoinToPortfolioCoinItem(coin: PortfolioCoinData): PortfolioCoinItem {
+        val priceChangePercent= coin.price.changePercent1h.toString()
+        val priceIncrease = coin.price.changePercent1h > 0
+
+        return PortfolioCoinItem(
             iconPath = coin.iconPath,
             ticker = coin.ticker,
             price = coin.price.toString(),

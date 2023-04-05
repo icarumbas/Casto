@@ -1,8 +1,8 @@
 package com.icarumbas.casto.platformSpecific
 
 import android.content.Context
-import com.icarumbas.casto.platformSpecific.data.DriverFactory
-import okio.FileSystem
+import com.icarumbas.casto.platformSpecific.data.DatabaseDriverFactory
+import com.icarumbas.casto.platformSpecific.data.SettingsFactory
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
@@ -17,8 +17,11 @@ actual class PlatformConfigurationImpl(
             bind<Context>() with singleton {
                 this@PlatformConfigurationImpl.context
             }
-            bind<DriverFactory>() with singleton {
-                DriverFactory(instance())
+            bind<DatabaseDriverFactory>() with singleton {
+                DatabaseDriverFactory(instance())
+            }
+            bind<SettingsFactory>() with singleton {
+                SettingsFactory(instance())
             }
         }
 }

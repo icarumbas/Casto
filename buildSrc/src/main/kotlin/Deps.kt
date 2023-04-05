@@ -63,6 +63,7 @@ object Deps {
         const val napier = "io.github.aakira:napier:${Versions.napier}"
         const val libresCompose = "io.github.skeptick.libres:libres-compose:${Versions.libres}"
         const val okio = "com.squareup.okio:okio:${Versions.okio}"
+        const val settings = "com.russhwolf:multiplatform-settings:${Versions.settings}"
     }
 
     object Coil {

@@ -1,10 +1,10 @@
-package com.icarumbas.casto.interactor
+package com.icarumbas.casto.service
 
-import com.icarumbas.casto.api.icons.CastoIconsApi
+import com.icarumbas.casto.api.icons.IconsApi
 import com.icarumbas.casto.storage.icons.IconsStorage
 
-class IconsInteractor(
-    private val iconsApi: CastoIconsApi,
+class IconsService(
+    private val iconsApi: IconsApi,
     private val iconsStorage: IconsStorage,
 ) {
 

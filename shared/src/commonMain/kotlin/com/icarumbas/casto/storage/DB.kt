@@ -1,9 +1,9 @@
 package com.icarumbas.casto.storage
 
 import com.icarumbas.casto.Database
-import com.icarumbas.casto.platformSpecific.data.DriverFactory
+import com.icarumbas.casto.platformSpecific.data.DatabaseDriverFactory
 
-fun createDatabase(driverFactory: DriverFactory): Database {
-    val driver = driverFactory.createDriver()
+fun createDatabase(databaseDriverFactory: DatabaseDriverFactory): Database {
+    val driver = databaseDriverFactory.createDriver()
     return Database(driver)
 }

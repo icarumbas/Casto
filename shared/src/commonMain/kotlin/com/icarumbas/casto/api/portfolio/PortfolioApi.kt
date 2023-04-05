@@ -15,7 +15,7 @@ class PortfolioApi(
     private val client: HttpClient,
 ) {
     suspend fun getPortfolio(id: String): PortfolioDataResponse? {
-        val response = client.get("$BASE_URL/user-assets") {
+        val response = client.get("$BASE_URL/holdings") {
             url.parameters.append(ID_PARAM, id)
         }
         return if (response.status.isSuccess()) {
@@ -31,7 +31,7 @@ class PortfolioApi(
         publicKey: String,
         privateKey: String,
     ): Boolean {
-        val response = client.get("$BASE_URL/save-binance-credentials") {
+        val response = client.post("$BASE_URL/save-binance-credentials") {
             url.parameters.append(ID_PARAM, id)
             setBody(KeyCredentialsRequest(publicKey, privateKey))
         }
