@@ -8,6 +8,7 @@ import dev.icerock.moko.mvvm.flow.CStateFlow
 import dev.icerock.moko.mvvm.flow.cFlow
 import dev.icerock.moko.mvvm.flow.cStateFlow
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.onEach
@@ -22,6 +23,7 @@ data class PortfolioState(
 
 sealed class PortfolioIntent {
     object EnterScreen : PortfolioIntent()
+    class SetupBinance(val publicKey: String, val privateKey: String) : PortfolioIntent()
 }
 
 sealed class PortfolioSideEffect {
@@ -43,28 +45,50 @@ class PortfolioViewModel : ViewModel() {
             is PortfolioIntent.EnterScreen -> {
                 fetchData()
             }
+            is PortfolioIntent.SetupBinance -> {
+
+            }
         }
     }
 
     private fun fetchData() {
         viewModelScope.launch {
-            portfolioService.portfolioFlow.onEach {
-                val
-                _state.value = _state.value.copy(items = )
+            portfolioService.portfolioFlow.collect {
+                val items = it.coins.map(::storageCoinToPortfolioCoinItem)
+                _state.value = _state.value.copy(items = items)
             }
+        }
+
+        viewModelScope.launch(Dispatchers.Default) {
+            setupBinance()
+            portfolioService.loadPortfolio()
+        }
+    }
+
+    private fun setupBinance() {
+        viewModelScope.launch {
+            portfolioService.saveBinanceCredentials(
+                "UxrWvc6moNEClFXXiam6243wHC8FJL3Th17nwqzf7eKbd1dSHoOQ30Wl7b4FkJaV",
+                "X6dH4M0xxw5blzz9ejkHiVH28op03EFxTbEUUa4AzaxpqffUeDk9fTnQcFvC3WYp"
+            )
         }
     }
 
     private fun storageCoinToPortfolioCoinItem(coin: PortfolioCoinData): PortfolioCoinItem {
-        val priceChangePercent= coin.price.changePercent1h.toString()
-        val priceIncrease = coin.price.changePercent1h > 0
+        val price = coin.price
+        val info = coin.info
+        val holdings = coin.holdingsInfo
+        val holdingsPrice = holdings.holdings * price.price
+
+        val priceChangePercent = price.changePercent1h.toString()
+        val priceIncrease = price.changePercent1h > 0
 
         return PortfolioCoinItem(
             iconPath = coin.iconPath,
-            ticker = coin.ticker,
-            price = coin.price.toString(),
-            holdings = coin.holdings.toString(),
-            holdingsPrice = coin.holdingsPrice.toString(),
+            ticker = info.ticker,
+            price = price.price.toString(),
+            holdings = holdings.holdings.toString(),
+            holdingsPrice = holdingsPrice.toString(),
             priceChangePercent = priceChangePercent,
             priceIncrease = priceIncrease
         )

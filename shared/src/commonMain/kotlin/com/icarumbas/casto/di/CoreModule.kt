@@ -7,6 +7,7 @@ import com.icarumbas.casto.storage.SecureKeyStorage
 import com.icarumbas.casto.storage.createDatabase
 import com.icarumbas.casto.storage.files.FileStorage
 import com.icarumbas.casto.storage.files.OkioFileStorage
+import com.icarumbas.casto.storage.user.UserSettings
 import com.russhwolf.settings.Settings
 import io.ktor.client.*
 import org.kodein.di.DI
@@ -28,7 +29,10 @@ val coreApiModule = DI.Module("coreApiModule") {
         createDatabase(instance())
     }
     bind<Settings>() with singleton {
-        val sf by appDI.instance<SettingsFactory>()
+        val sf = instance<SettingsFactory>()
         sf.createSettings()
+    }
+    bind<UserSettings>() with singleton {
+        UserSettings(instance())
     }
 }

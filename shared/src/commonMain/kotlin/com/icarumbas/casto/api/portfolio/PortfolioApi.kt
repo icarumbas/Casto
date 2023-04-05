@@ -5,6 +5,7 @@ import com.icarumbas.casto.api.portfolio.responses.PortfolioDataResponse
 import io.github.aakira.napier.Napier
 import io.ktor.client.*
 import io.ktor.client.call.*
+import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 
@@ -33,6 +34,7 @@ class PortfolioApi(
     ): Boolean {
         val response = client.post("$BASE_URL/save-binance-credentials") {
             url.parameters.append(ID_PARAM, id)
+            contentType(ContentType.Application.Json)
             setBody(KeyCredentialsRequest(publicKey, privateKey))
         }
         return response.status.isSuccess()

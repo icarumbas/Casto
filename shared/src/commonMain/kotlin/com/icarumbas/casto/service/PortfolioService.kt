@@ -70,8 +70,15 @@ class PortfolioServiceImpl(
     }
 
     override suspend fun saveBinanceCredentials(publicKey: String, privateKey: String) {
+        if (userSettings.binanceSetUp) {
+            return
+        }
+        
         val id = loadId()
-        portfolioApi.saveBinanceCredentials(id, publicKey, privateKey)
+        val success = portfolioApi.saveBinanceCredentials(id, publicKey, privateKey)
+        if (success) {
+            userSettings.binanceSetUp = true
+        }
     }
 
     private suspend fun loadId(): String {

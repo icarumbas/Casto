@@ -43,15 +43,7 @@ fun PortfolioScreen(
         viewModel.obtainIntent(intent = PortfolioIntent.EnterScreen)
     })
 
-    when (val state = viewState) {
-        is PortfolioState.Data -> {
-            CoinsList(coinsData = state.items)
-        }
-        else -> {
-
-        }
-    }
-
+    CoinsList(coinsData = viewState.items)
 }
 
 @Composable

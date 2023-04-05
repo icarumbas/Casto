@@ -11,7 +11,14 @@ class UserSettings(private val settings: Settings) {
             settings[ID] = value
         }
 
+    var binanceSetUp: Boolean
+        get() = settings.getBoolean(BINANCE, false)
+        set(value) {
+            settings.set(BINANCE, value)
+        }
+
     private companion object {
         const val ID = "ID"
+        const val BINANCE = "BINANCE"
     }
 }
