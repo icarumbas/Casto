@@ -39,6 +39,7 @@ val marketDataModule = DI.Module("portfolioModule") {
             coinsInfoQueries = instance(),
             coinsPriceQueries = instance(),
             userSettings = instance(),
+            database = instance(),
         )
     }
 }

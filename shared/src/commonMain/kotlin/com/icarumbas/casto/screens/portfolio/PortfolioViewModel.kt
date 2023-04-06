@@ -48,6 +48,7 @@ class PortfolioViewModel : ViewModel() {
             is PortfolioIntent.SetupBinance -> {
 
             }
+            else -> {}
         }
     }
 
@@ -60,17 +61,17 @@ class PortfolioViewModel : ViewModel() {
         }
 
         viewModelScope.launch(Dispatchers.Default) {
-            setupBinance()
+            portfolioService.saveBinanceCredentials(
+                "UxrWvc6moNEClFXXiam6243wHC8FJL3Th17nwqzf7eKbd1dSHoOQ30Wl7b4FkJaV",
+                "X6dH4M0xxw5blzz9ejkHiVH28op03EFxTbEUUa4AzaxpqffUeDk9fTnQcFvC3WYp"
+            )
             portfolioService.loadPortfolio()
         }
     }
 
     private fun setupBinance() {
         viewModelScope.launch {
-            portfolioService.saveBinanceCredentials(
-                "UxrWvc6moNEClFXXiam6243wHC8FJL3Th17nwqzf7eKbd1dSHoOQ30Wl7b4FkJaV",
-                "X6dH4M0xxw5blzz9ejkHiVH28op03EFxTbEUUa4AzaxpqffUeDk9fTnQcFvC3WYp"
-            )
+
         }
     }
 
@@ -86,10 +87,10 @@ class PortfolioViewModel : ViewModel() {
         return PortfolioCoinItem(
             iconPath = coin.iconPath,
             ticker = info.ticker,
-            price = price.price.toString(),
-            holdings = holdings.holdings.toString(),
-            holdingsPrice = holdingsPrice.toString(),
-            priceChangePercent = priceChangePercent,
+            price = price.price.toString().take(3),
+            holdings = holdings.holdings.toString().take(3),
+            holdingsPrice = holdingsPrice.toString().take(3),
+            priceChangePercent = priceChangePercent.take(3),
             priceIncrease = priceIncrease
         )
     }

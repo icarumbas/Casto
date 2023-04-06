@@ -1,5 +1,6 @@
 
 import app.cash.sqldelight.coroutines.asFlow
+import app.cash.sqldelight.coroutines.mapToList
 import com.icarumbas.casto.*
 import com.icarumbas.casto.api.portfolio.PortfolioApi
 import com.icarumbas.casto.api.portfolio.responses.PortfolioCoinInfoResponse
@@ -31,6 +32,7 @@ class PortfolioServiceImpl(
     private val coinsInfoQueries: CoinsInfoQueries,
     private val coinsPriceQueries: CoinsPriceQueries,
     private val userSettings: UserSettings,
+    private val database: Database,
 ) : PortfolioService {
 
     private val scope = CoroutineScope(Dispatchers.Default)
@@ -38,9 +40,9 @@ class PortfolioServiceImpl(
     override val portfolioFlow: StateFlow<PortfolioData> =
         holdingsInfoQueries.selectWithPricesAndInfo()
             .asFlow()
+            .mapToList(scope.coroutineContext)
             .map { selectInfo ->
-                val queryList = selectInfo.executeAsList()
-                val asyncResults = queryList.map {
+                val asyncResults = selectInfo.map {
                     scope.async {
                         it.toPortfolioCoinData()
                     }
@@ -51,20 +53,26 @@ class PortfolioServiceImpl(
             }.stateIn(scope, SharingStarted.WhileSubscribed(), PortfolioData(emptyList()))
 
     override suspend fun loadPortfolio() {
-        val id = loadId()
-        val response = portfolioApi.getPortfolio(id) ?: return
-        response.coins.forEach { coin ->
-            with(coin.toCoinInfo()) {
-                coinsInfoQueries.insert(id, ticker, name)
-            }
+        val userId = loadUserId()
+        val response = portfolioApi.getPortfolio(userId) ?: return
 
-            with(coin.toCoinPrice()) {
-                coinsPriceQueries.insert(id, price, changePercent1h, changePercent24h,
-                    changePercent7d, changePercent14d, changePercent30d, changePercent60d,
-                    changePercent1y)
-            }
-            with(coin.toHoldingsInfo()) {
-                holdingsInfoQueries.insert(id, sourceId, holdings)
+        database.transaction {
+            response.coins.forEach { coin ->
+                val coinId = coin.id
+                with(coin.toCoinInfo()) {
+                    coinsInfoQueries.insert(coinId, ticker, name)
+                }
+
+                with(coin.toCoinPrice()) {
+                    coinsPriceQueries.insert(
+                        coinId, price, changePercent1h, changePercent24h,
+                        changePercent7d, changePercent14d, changePercent30d, changePercent60d,
+                        changePercent1y
+                    )
+                }
+                with(coin.toHoldingsInfo()) {
+                    holdingsInfoQueries.insert(coinId, sourceId, holdings)
+                }
             }
         }
     }
@@ -74,14 +82,14 @@ class PortfolioServiceImpl(
             return
         }
         
-        val id = loadId()
+        val id = loadUserId()
         val success = portfolioApi.saveBinanceCredentials(id, publicKey, privateKey)
         if (success) {
             userSettings.binanceSetUp = true
         }
     }
 
-    private suspend fun loadId(): String {
+    private suspend fun loadUserId(): String {
         return userSettings.id.ifEmpty {
             val newId = userApi.getId()
             userSettings.id = newId

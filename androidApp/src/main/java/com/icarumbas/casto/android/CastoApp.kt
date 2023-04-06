@@ -10,8 +10,6 @@ import io.github.aakira.napier.Napier
 
 class CastoApp : Application() {
 
-
-
     override fun onCreate() {
         super.onCreate()
         setupAppDi(PlatformConfigurationImpl(this))
