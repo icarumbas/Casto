@@ -3,6 +3,7 @@ package com.icarumbas.casto.screens.portfolio
 import PortfolioService
 import com.icarumbas.casto.di.appDI
 import com.icarumbas.casto.models.PortfolioCoinData
+import com.icarumbas.casto.platformSpecific.utils.roundDecimal
 import dev.icerock.moko.mvvm.flow.CFlow
 import dev.icerock.moko.mvvm.flow.CStateFlow
 import dev.icerock.moko.mvvm.flow.cFlow
@@ -81,16 +82,19 @@ class PortfolioViewModel : ViewModel() {
         val holdings = coin.holdingsInfo
         val holdingsPrice = holdings.holdings * price.price
 
-        val priceChangePercent = price.changePercent1h.toString()
+        val priceChangePercent = roundDecimal(price.changePercent1h, 2) + "%"
+        val holdingsPriceStr = roundDecimal(holdingsPrice, 2)
+        val priceStr = roundDecimal(price.price, 2)
+        val holdingsStr = roundDecimal(holdings.holdings, 2)
         val priceIncrease = price.changePercent1h > 0
 
         return PortfolioCoinItem(
             iconPath = coin.iconPath,
             ticker = info.ticker,
-            price = price.price.toString().take(3),
-            holdings = holdings.holdings.toString().take(3),
-            holdingsPrice = holdingsPrice.toString().take(3),
-            priceChangePercent = priceChangePercent.take(3),
+            price = priceStr,
+            holdings = holdingsStr,
+            holdingsPrice = holdingsPriceStr,
+            priceChangePercent = priceChangePercent,
             priceIncrease = priceIncrease
         )
     }
